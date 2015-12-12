@@ -3760,3 +3760,6 @@ span.duracion {
 .card-img {
     width: 10px;
 }
+td .rating, td .comunio-rating, td .total-points {
+    text-align: center;
+}

@@ -24,13 +24,13 @@
             <td>
                 <span class="pos-{{player.Pos}}">{{player.Pos | transformPosition }}</span>
             </td>
-            <td>
+            <td class="player-name">
                 <span>{{player.Name}}</span>
             </td>
-            <td>
+            <td class="rating">
                 <span>{{player.Rating}}</span>
             </td>
-            <td style="text-align: center">
+            <td class="comunio-rating">
                 <span>{{player.ComunioRating}}</span>
             </td>
         </tr>
@@ -41,7 +41,7 @@
             </td>
             <td></td>
             <td></td>
-            <td>
+            <td class="total-points">
                 <span ng-bind="totalPoints()"></span>
             </td>
             <td></td>
