@@ -2,7 +2,7 @@
 
 ##Description
 
-Weba`` that shows information about a Comunio's player lineup.
+Webapp that shows information about a Comunio's player lineup.
 
 [Comunio](http://www.comunio.co.uk) is a football manager.
 
