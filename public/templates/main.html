@@ -1,0 +1,54 @@
+<!-- HEADER  -->
+<div class="header group">
+    <div class="wrapper"><a class="logo" href=""><img alt="Header" src="public/img/header.png"/></a>
+        <div class="left">
+            <!--<ul class="nav">
+                <li><a href="http://www.comuniazo.com/comunio/puntos"><i class="fa fa-trophy"></i>Puntos</a></li>
+                <li><a href="http://www.comuniazo.com/comunio/dinero"><i class="fa fa-eur"></i>Dinero</a></li>
+                <li>
+                    <a href="http://www.comuniazo.com/comunio/jugadores"><i class="fa fa-users"></i>Jugadores <span style="margin-top: -1px">▾</span></a>
+                    <ul class="sub">
+                        <li><a href="http://www.comuniazo.com/comunio/equipos/athletic"><i class="spr-athletic"></i>Athletic</a></li>
+                        <li><a href="http://www.comuniazo.com/comunio/equipos/athletic"><i class="spr-athletic"></i>Athletic</a></li>
+                    </ul>
+                </li>
+                <li><a href="http://www.comuniazo.com/comunio/onceideal"><i class="fa fa-star"></i>Once ideal</a></li>
+            </ul>
+            <div class="buscador">
+                <form id="search" name="search" method="post" action="" onsubmit="return false">
+                    <input name="s" type="text" id="s" autocomplete="off" placeholder="Buscar jugador...">
+                    <i class="fa fa-search"></i>
+                    <div id="results"></div>
+                </form>
+            </div>-->
+        </div>
+    </div>
+</div>
+
+<!-- MAIN WRAPPER  -->
+<div class="wrapper group" ng-controller="mainCtrl">
+    <div class="content" style="position: relative">
+        <div class="submenu">
+            <div class="sub-calc">
+                <input class="caja" ng-model="user" type="text" name="user" id="user" placeholder="Usuario de Comunio">
+                <button class="btn" type="submit" id="calcularBtn" ng-click="calcularPuntos()">¡Calcular!</button>
+            </div>
+        </div>
+        <div id="user-empty-error">
+            <span>Por favor, introduzca un nombre de usuario.</span>
+        </div>
+        <div id="calculo"></div>
+        <div class="boxes-2">
+            <points-table></points-table>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER  -->
+<div class="footer">
+    <div class="wrapper">
+        <ul class="info">
+            <li>Daniel García Páez</li>
+        </ul>
+    </div>
+</div>

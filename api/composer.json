@@ -1,0 +1,6 @@
+{
+    "require": {
+        "slim/slim": "^2.6",
+        "fabpot/goutte": "^3.1"
+    }
+}
