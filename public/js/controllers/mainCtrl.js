@@ -23,6 +23,7 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
         $scope.getLineupRatings(function(error, ratings){
             $('#calcularBtn').removeClass('loadinggif');
             $('#calcularBtn').html('¡Calcular!');
+            $('#calcularBtn').prop('disabled', false);
 
             if (error){
                 window.alert(error.data.error);
@@ -43,6 +44,7 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
             $('#user-empty-error').hide();
             $('#calcularBtn').html('');
             $('#calcularBtn').addClass('loadinggif');
+            $('#calcularBtn').prop('disabled', true);
 
             comunioService.getUserPoints($scope.user,
                 function(ratings) {
@@ -81,25 +83,4 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
             }
         }, 500);
     };
-
-    $scope.getPosClass = function(player){
-        /*$timeout(function() {
-            var rows = $('.pointstable tr');
-            for (var i=1; i<rows.length-2; i++){
-                var j=0, html='';
-                for (j=0; j<ratings[i-1].Goals; j++){
-                    html += '<img src="public/img/goal.png" alt="Goal" class="event-img">';
-                }
-                for (j=0; j<ratings[i-1].Yellow; j++){
-                    html += '<img src="public/img/yellow.png" alt="Goal" class="event-img card-img">';
-                }
-                for (j=0; j<ratings[i-1].Red; j++){
-                    html += '<img src="public/img/red.png" alt="Goal" class="event-img card-img">';
-                }
-                angular.element(rows[i]).append('<td>'+html+'</td>');
-            }
-        }, 500);*/
-        console.log("getPosClass", player);
-    };
-
 });
