@@ -1319,9 +1319,9 @@ input[type=password]:focus, input[type=text]:focus, textarea:focus {
     float: left;
     border-radius: 2px 0 0 2px;
     text-align: center;
-    width: 50%;
+    width: 70%;
     height: 40px;
-    line-height: 40px
+    line-height: 40px;
 }
 
 .select select {
@@ -1339,10 +1339,11 @@ input[type=password]:focus, input[type=text]:focus, textarea:focus {
     border-left-width: 0;
     float: left;
     padding: 5px 0;
-    width: 50%;
+    width: 30%;
     height: 40px;
     font-size: 12px;
-    font-family: Arial, Sans-Serif
+    font-family: Arial, Sans-Serif;
+    text-align: center;
 }
 
 .select select:hover {
@@ -1351,7 +1352,6 @@ input[type=password]:focus, input[type=text]:focus, textarea:focus {
 
 .select select:focus {
     border-color: #090;
-    box-shadow: 0 0 5px #090;
     color: #555;
     background: #fff
 }
@@ -3762,4 +3762,7 @@ span.duracion {
 }
 td .rating, td .comunio-rating, td .total-points {
     text-align: center;
+}
+.sub-jornada {
+    width: 20%;
 }

@@ -33,6 +33,18 @@
                 <input class="caja" ng-model="user" type="text" name="user" id="user" placeholder="Usuario de Comunio">
                 <button class="btn" type="submit" id="calcularBtn" ng-click="calcularPuntos()">¡Calcular!</button>
             </div>
+            <div class="sub-jornada select group">
+                <form method="get" action="">
+                    <label for="jornada">Matchday</label>
+                    <select id="jornada" name="jornada" ng-model="matchday">
+                        <option ng-repeat="day in schedule" title="{{day.matchday}}"
+                                ng-selected="{{day.matchday == matchday}}"
+                                value="{{day.matchday}}">
+                            {{day.matchday}}
+                        </option>
+                    </select>
+                </form>
+            </div>
         </div>
         <div id="user-empty-error">
             <span>Por favor, introduzca un nombre de usuario.</span>

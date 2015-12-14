@@ -1,10 +1,23 @@
 /**
  * Created by Daniel on 10/10/2015.
  */
-comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $timeout) {
+comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $timeout, $filter, APP_CONSTANTS) {
 
     $scope.ratings = [];
     $scope.players = [];
+    $scope.schedule = APP_CONSTANTS.schedule;
+
+    $scope.selectCurrentMatchday = function(){
+        var today = moment(),
+            todayMatchday = 0;
+
+        angular.forEach(APP_CONSTANTS.schedule, function(matchday){
+            if (today.isAfter(matchday.date[matchday.date.length - 1])) todayMatchday++;
+            else return matchday.matchday;
+        });
+        return todayMatchday;
+    };
+    $scope.matchday = $scope.selectCurrentMatchday();
 
     $scope.calcularPuntos = function(){
         $scope.getLineupRatings(function(error, ratings){
