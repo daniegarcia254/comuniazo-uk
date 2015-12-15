@@ -54,9 +54,10 @@ $app->get('/points/:user', function($user) use ($app){
             array_push($playersInfo,getPlayerInfo($lineup[$i]));
         }
 
+        $dates = $app->request()->get('dates');
         $ratings = [];
         for ($k=0; $k<(count($playersInfo)); $k++){
-            array_push($ratings,getPlayerRating($playersInfo[$k]));
+            array_push($ratings,getPlayerRating($playersInfo[$k], $dates));
         }
 
         echo json_encode($ratings);
@@ -156,7 +157,7 @@ function getPlayerInfo($player){
     return $player;
 };
 
-function getPlayerRating($player){
+function getPlayerRating($player, $dates){
     $client = new Client();
     $crawler = $client->request('GET', $player["Link"]);
 

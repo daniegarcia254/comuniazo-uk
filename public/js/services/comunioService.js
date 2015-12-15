@@ -7,8 +7,8 @@ comunioApp.service('comunioService', function ($http, APP_CONSTANTS) {
         getUserPoints: getUserPoints
     });
 
-    function getUserPoints(user, ok, error) {
-        $http.get(APP_CONSTANTS.API_URI+"/points/"+user).then(
+    function getUserPoints(user, dates, ok, error) {
+        $http.get(APP_CONSTANTS.API_URI+"/points/"+user+"?dates="+dates).then(
             function(response){
                 console.log("Response",response);
                 ok(response.data);

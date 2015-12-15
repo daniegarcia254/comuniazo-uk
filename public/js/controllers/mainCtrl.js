@@ -46,7 +46,7 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
             $('#calcularBtn').addClass('loadinggif');
             $('#calcularBtn').prop('disabled', true);
 
-            comunioService.getUserPoints($scope.user,
+            comunioService.getUserPoints($scope.user, APP_CONSTANTS.schedule[$scope.matchday - 1].date,
                 function(ratings) {
                     console.log("Ratings", ratings);
                     callback(null, ratings);
