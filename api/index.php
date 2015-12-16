@@ -54,7 +54,7 @@ $app->get('/points/:user', function($user) use ($app){
             array_push($playersInfo,getPlayerInfo($lineup[$i]));
         }
 
-        $dates = $app->request()->get('dates');
+        $dates = explode(',',$app->request()->get('dates'));
         $ratings = [];
         for ($k=0; $k<(count($playersInfo)); $k++){
             array_push($ratings,getPlayerRating($playersInfo[$k], $dates));
@@ -169,23 +169,43 @@ function getPlayerRating($player, $dates){
         $prevLastRow = $nodesRows->eq(count($nodesRows) - 2);
 
         if ($nodesTournament->last()->text() == 'EPL') {
-            $r = $lastRow->filter('.rating')->text();
-            $rating = trim(preg_replace('/\s\s+/', ' ', $r));
-            $goals = count($lastRow->filter('.goal'));
-            $yellow = count($lastRow->filter('.yellow'));
-            $red = count($lastRow->filter('.red'));
+            if (in_array(formatDate($lastRow->filter('.date')->text()),$dates)) {
+                $r = $lastRow->filter('.rating')->text();
+                $rating = trim(preg_replace('/\s\s+/', ' ', $r));
+                $goals = count($lastRow->filter('.goal'));
+                $yellow = count($lastRow->filter('.yellow'));
+                $red = count($lastRow->filter('.red'));
+            } else {
+                $player["Rating"] = 'N/A';
+                $player["ComunioRating"] = 'N/A';
+                $player["Goals"] = 0;
+                $player["Yellow"] = 0;
+                $player["Red"] = 0;
+                return $player;
+            }
         } else {
             if ($nodesTournament->eq(count($nodesTournament) - 2)->text() == 'EPL') {
-                $r = $prevLastRow->filter('.rating')->text();
-                $rating = trim(preg_replace('/\s\s+/', ' ', $r));
-                $goals = count($prevLastRow->filter('.goal'));
-                $yellow = count($prevLastRow->filter('.yellow'));
-                $red = count($prevLastRow->filter('.red'));
+                if (in_array(formatDate($prevLastRow->filter('.date')->text()),$dates)) {
+                    $r = $prevLastRow->filter('.rating')->text();
+                    $rating = trim(preg_replace('/\s\s+/', ' ', $r));
+                    $goals = count($prevLastRow->filter('.goal'));
+                    $yellow = count($prevLastRow->filter('.yellow'));
+                    $red = count($prevLastRow->filter('.red'));
+                } else {
+                    $player["Rating"] = 'N/A';
+                    $player["ComunioRating"] = 'N/A';
+                    $player["Goals"] = 0;
+                    $player["Yellow"] = 0;
+                    $player["Red"] = 0;
+                    return $player;
+                }
             } else {
-                $rating = '6.0';
-                $goals = 0;
-                $yellow = 0;
-                $red = 0;
+                $player["Rating"] = 'N/A';
+                $player["ComunioRating"] = 'N/A';
+                $player["Goals"] = 0;
+                $player["Yellow"] = 0;
+                $player["Red"] = 0;
+                return $player;
             }
         }
 
@@ -309,6 +329,11 @@ function transforTeam($team){
         default:
             return $team;
     }
+};
+
+function formatDate($date){
+    $d = explode('-', $date);
+    return $d[2] . '-' . $d[1] . '-' . $d[0];
 }
 
 $app->run();
