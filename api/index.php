@@ -77,14 +77,16 @@ function getLineup($id){
         if (sizeof(explode(' ', $node->text())) > 1)
             return trim(explode(' ', $node->text())[1]);
         else
-            return $node->text();
+            if ($node->text() == 'Krkic') return "Bojan";
+            else return $node->text();
     });
 
     $names = $crawler->filter('.tablecontent03 tr td:nth-child(3)')->each(function ($node) {
         if (sizeof(explode(' ', $node->text())) > 1)
             return trim(explode(' ', $node->text())[1]);
         else
-            return $node->text();
+            if ($node->text() == 'Krkic') return "Bojan";
+            else return $node->text();
     });
     $teams = $crawler->filter('.tablecontent03 tr td:nth-child(4) img')->each(function ($node) {
         return transforTeam($node->attr('alt'));
