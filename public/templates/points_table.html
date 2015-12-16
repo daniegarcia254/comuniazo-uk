@@ -1,0 +1,51 @@
+<!-- Displays a table with the ToDo's information in the variable [toDos] -->
+<div id="pointsTableDiv">
+    <table class="table table-striped pointstable">
+        <thead>
+        <tr>
+            <th class="col-sm-1">
+                Pos
+            </th>
+            <th class="col-sm-3">
+                Player
+            </th>
+            <th class="col-sm-1">
+                Rating
+            </th>
+            <th class="col-sm-1">
+                Points
+            </th>
+            <th class="col-sm-3">
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="player in players">
+            <td>
+                <span class="pos-{{player.Pos}}">{{player.Pos | transformPosition }}</span>
+            </td>
+            <td class="player-name">
+                <span>{{player.Name}}</span>
+            </td>
+            <td class="rating">
+                <span>{{player.Rating}}</span>
+            </td>
+            <td class="comunio-rating">
+                <span>{{player.ComunioRating}}</span>
+            </td>
+        </tr>
+        <tr></tr>
+        <tr id="totalPointsRow">
+            <td>
+                <span>Total</span>
+            </td>
+            <td></td>
+            <td></td>
+            <td class="total-points">
+                <span ng-bind="totalPoints()"></span>
+            </td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
