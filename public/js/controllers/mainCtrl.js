@@ -62,6 +62,7 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
             if (player.ComunioRating != 'N/A')
                 sum += parseInt(player.ComunioRating);
         });
+        sum = sum - ((11-$scope.players.length)*4);
         return sum;
     };
 
