@@ -231,6 +231,8 @@ function transformRating($rating, $goals, $yellow, $red, $pos){
 
     $comunioRating = 0;
 
+    $rating = round($rating, 1, PHP_ROUND_HALF_UP);
+
     if ($rating>=0 && $rating<1.0)
         $comunioRating=-10;
     else if ($rating>=1.0 && $rating<2.0)
