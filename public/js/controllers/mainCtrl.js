@@ -17,7 +17,7 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
         });
         return todayMatchday;
     };
-    $scope.matchday = $scope.selectCurrentMatchday();
+    $scope.matchday = $scope.selectCurrentMatchday()+1;
 
     $scope.calcularPuntos = function(){
         $scope.getLineupRatings(function(error, ratings){
