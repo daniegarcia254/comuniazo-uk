@@ -10,7 +10,8 @@ class APILogWriter {
 
 set_time_limit(0);
 //Require vendor autoload for load libraries and frameworks
-require 'vendor/autoload.php';
+include(dirname(__FILE__) . '\vendor\autoload.php');
+include(dirname(__FILE__) . '\config.php');
 
 //Load SlimPHP Framework
 \Slim\Slim::registerAutoloader();
