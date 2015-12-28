@@ -10,7 +10,7 @@ class APILogWriter {
 
 set_time_limit(0);
 //Require vendor autoload for load libraries and frameworks
-require 'vendor/autoload.php';
+include(dirname(__FILE__) . '/vendor/autoload.php');
 
 //Load SlimPHP Framework
 \Slim\Slim::registerAutoloader();
@@ -23,7 +23,7 @@ $app = new Slim\Slim(array(
         'log.enabled' => true,
         'log.level' => \Slim\Log::DEBUG,
         'log.writer' => new APILogWriter(),
-        'debug' => true
+        'debug' => false
     )
 );
 
@@ -42,7 +42,7 @@ set_error_handler("myErrorHandler");
 set_exception_handler("myErrorHandler");
 
 $app->get('/points/:user', function($user) use ($app){
-    try {
+   try {
         $urlSoapWSDL = 'http://www.comunio.co.uk/soapservice.php?wsdl';
         $soapClient = new SoapClient($urlSoapWSDL);
         $userId = $soapClient->getuserid($user);
