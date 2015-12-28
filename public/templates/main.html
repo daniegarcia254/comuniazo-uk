@@ -36,7 +36,7 @@
             <div class="sub-jornada select group">
                 <form method="get" action="">
                     <label for="jornada">Matchday</label>
-                    <select id="jornada" name="jornada" ng-model="matchday">
+                    <select id="jornada" name="jornada" ng-model="matchday" disabled>
                         <option ng-repeat="day in schedule" title="{{day.matchday}}"
                                 ng-selected="{{day.matchday == matchday}}"
                                 value="{{day.matchday}}">
