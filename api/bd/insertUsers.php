@@ -10,6 +10,7 @@ use Goutte\Client;
 
 insertUsers(COMMUNITY_NAME);
 
+//Given a community name, inserts its users info into DB
 function insertUsers($communityName)
 {
     $mysqli = new mysqli(HOST, USER_DB, USER_PWD, DATABASE);
@@ -50,8 +51,8 @@ function insertUsers($communityName)
             $user = $crawler->filter('#title h1')->text();
             $user = explode(")",explode("(",$user)[1])[0];
 
-            $stmt = $mysqli->prepare('INSERT INTO user(id,pid,name,community_id) VALUES (?, ?, ?, ?)');
-            $stmt->bind_param("siss",$user, intval($id), $userNames[$i], $communityInfo['id']);
+            $stmt = $mysqli->prepare('INSERT INTO user(pid,id,name,community_id) VALUES (?, ?, ?, ?)');
+            $stmt->bind_param("siss", intval($id), $user, $userNames[$i], $communityInfo['id']);
             $stmt->execute();
         }
     }
