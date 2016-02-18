@@ -1,4 +1,8 @@
 <!-- HEADER  -->
+<div class="alert alert-error alert-dismissable" style="display:none">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <strong>¡Error!</strong> Ha habido un error, por favor vuelva a reintentarlo o contacte con soporte técnico.
+</div>
 <div class="header group">
     <div class="wrapper"><a class="logo" href=""><img alt="Header" src="public/img/header.png"/></a>
         <div class="left">
@@ -36,7 +40,7 @@
             <div class="sub-jornada select group">
                 <form method="get" action="">
                     <label for="jornada">Matchday</label>
-                    <select id="jornada" name="jornada" ng-model="matchday">
+                    <select id="jornada" name="jornada" ng-model="matchday" disabled>
                         <option ng-repeat="day in schedule" title="{{day.matchday}}"
                                 ng-selected="{{day.matchday == matchday}}"
                                 value="{{day.matchday}}">
