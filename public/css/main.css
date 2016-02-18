@@ -3772,3 +3772,14 @@ td .rating, td .comunio-rating, td .total-points {
 .sub-jornada {
     width: 20%;
 }
+
+/*Bootstrap error*/
+.alert {
+    margin-bottom: 0px !important;
+}
+.alert-dismissable .close {
+    opacity: 1 !important;
+    position: fixed !important;
+    right: 10px !important;
+    top: 5px !important;
+}
