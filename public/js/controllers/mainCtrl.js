@@ -27,12 +27,14 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
 
     $scope.calcularPuntos = function(){
         $scope.getLineupRatings(function(error, ratings){
-            $('#calcularBtn').removeClass('loadinggif');
-            $('#calcularBtn').html('¡Calcular!');
-            $('#calcularBtn').prop('disabled', false);
+            var btnCalcular = $('#calcularBtn');
+            btnCalcular.removeClass('loadinggif');
+            btnCalcular.html('¡Calcular!');
+            btnCalcular.prop('disabled', false);
 
             if (error){
-                window.alert(error.data.error);
+                //window.alert(error.data.error);
+                $(".alert").css({ 'display': "" });
             } else {
                 console.log("Ratings",ratings);
                 $scope.players = ratings;
@@ -48,11 +50,12 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
             $('#user-empty-error').show();
         } else {
             $('#user-empty-error').hide();
-            $('#calcularBtn').html('');
-            $('#calcularBtn').addClass('loadinggif');
-            $('#calcularBtn').prop('disabled', true);
+            var btnCalcular = $('#calcularBtn');
+            btnCalcular.html('');
+            btnCalcular.addClass('loadinggif');
+            btnCalcular.prop('disabled', true);
 
-            comunioService.getUserPoints($scope.user, APP_CONSTANTS.schedule[$scope.matchday - 1].date,
+            comunioService.getUserPoints($scope.user,
                 function(ratings) {
                     console.log("Ratings", ratings);
                     callback(null, ratings);
