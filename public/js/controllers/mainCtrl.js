@@ -11,13 +11,19 @@ comunioApp.controller('mainCtrl', function ($scope, $http, comunioService, $time
         var today = moment(),
             todayMatchday = 0;
 
-        angular.forEach(APP_CONSTANTS.schedule, function(matchday){
-            if (today.isAfter(matchday.date[matchday.date.length - 1])) todayMatchday++;
-            else return matchday.matchday;
-        });
-        return todayMatchday;
+        var schedule = APP_CONSTANTS.schedule;
+        for (var i=0; i<schedule.length; i++) {
+            if (today.isAfter(schedule[i].date[schedule[i].date.length - 1])) {
+                if (today.isBefore(schedule[i+1].date[0])) {
+                    return schedule[i].matchday;
+                }
+            }
+            else {
+                return schedule[i].matchday;
+            }
+        }
     };
-    $scope.matchday = $scope.selectCurrentMatchday()+1;
+    $scope.matchday = $scope.selectCurrentMatchday();
 
     $scope.calcularPuntos = function(){
         $scope.getLineupRatings(function(error, ratings){
