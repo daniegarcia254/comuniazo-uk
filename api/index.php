@@ -60,7 +60,7 @@ $app->get('/points/:user', function($user) use ($app){
         //Get user lineup players info and ratings for a matchday
         $querySelect = "SELECT p.who_name as Name, p.value as Value, p.pos as Pos, t.name as Team, e.rating as ComunioRating, e.rating_who as Rating, e.goals as Goals, e.yellow_cards as Yellow, e.red_cards as Red ";
         $queryFrom = "FROM user as u, player as p, event as e, matchday as m, team as t ";
-        $queryWhere = "WHERE u.pid=$userId AND p.user_id=u.pid AND p.team=t.id AND e.player_id=p.id AND e.matchday=m.id AND m.id IN ($stringMatchdayIds) ";
+        $queryWhere = "WHERE u.pid=$userId AND (p.user_id=u.pid OR p.user_old_id=u.pid) AND p.team=t.id AND e.player_id=p.id AND e.matchday=m.id AND m.id IN ($stringMatchdayIds) ";
         $queryOrder = "ORDER BY CASE Pos WHEN 'Goalkeeper' THEN 1 WHEN 'Defender' THEN 2 WHEN 'Midfielder' THEN 3 WHEN 'Striker' THEN 4 END";
         $query = $querySelect . $queryFrom . $queryWhere . $queryOrder;
         $result = $mysqli->query($query);

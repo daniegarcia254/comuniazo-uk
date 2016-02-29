@@ -39,23 +39,25 @@ function insertPlayersRatings($communityName)
     //Loop through the community uses
     while ($userInfo = $usersInfo->fetch_assoc()) {
 
-        $logger->write_log("#USER_INFO: \n" . print_r($userInfo,true), $logger_file);
+        $logger->write_log("#USER_INFO: \n" . print_r($userInfo, true), $logger_file);
 
         //Get user lineup info
         $lineup = getLineup($userInfo);
-        $logger->write_log("#USER_LINEUP: \n" . print_r($lineup,true), $logger_file);
+        $logger->write_log("#USER_LINEUP: \n" . print_r($lineup, true), $logger_file);
 
         //Loop through players of the lineup
-        for ($i=0; $i<(count($lineup)); $i++){
+        for ($i = 0; $i < (count($lineup)); $i++) {
             //Get player info from DB
-            $playerInfo_bd = $mysqli->query('SELECT * FROM player WHERE name="' . $lineup[$i]["name"] . '"');
+            $get_player_sql = 'SELECT * FROM player WHERE name="' . $lineup[$i]["name"] . '"';
+            $get_player_sql = $get_player_sql . 'AND (user_id=' . $userInfo["pid"] . ' OR user_old_id=' . $userInfo["pid"] . ')';
+            $playerInfo_bd = $mysqli->query($get_player_sql);
 
             //Player exists in DB
             if ($playerInfo_bd->num_rows > 0) {
 
                 $player_info = $playerInfo_bd->fetch_assoc();
-                $logger->write_log("#PLAYER EXISTS IN DB: \n" . print_r($player_info["name"],true), $logger_file);
-                
+                $logger->write_log("#PLAYER EXISTS IN DB: \n" . print_r($player_info["name"], true), $logger_file);
+
                 //Get player event for matchday in DB
                 $query = 'SELECT * FROM event WHERE player_id="' . $player_info["id"] . '" AND matchday IN (' . implode(',', $matchdayInfo["ids"]) . ')';
                 $playerEvent_bd = $mysqli->query($query);
@@ -75,16 +77,16 @@ function insertPlayersRatings($communityName)
                     insertPlayerRating($info);
                 }
 
-            //Player doesn't exist in DB
+                //Player doesn't exist in DB
             } else {
-                $logger->write_log("#PLAYER ". $lineup[$i]["name"] ."DOESN'T EXISTS IN DB", $logger_file);
+                $logger->write_log("#PLAYER " . $lineup[$i]["name"] . "DOESN'T EXISTS IN DB", $logger_file);
                 //Get player info from WHOSCORED web page
                 $playerInfo_who = getPlayerInfo($lineup[$i]);
                 //Insert player info into DB
                 $result = insertPlayer($playerInfo_who, $userInfo);
 
                 //If player inserted succesfully in DB --> Procced to recover and save matchday rating for player
-                if ($result===true) {
+                if ($result === true) {
                     //Get player matchday info
                     $info = getPlayerRating($playerInfo_who, $matchdayInfo);
                     //Save player matchday info into DB
@@ -144,6 +146,11 @@ function getLineup($user)
                 );
                 array_push($lineupFull, $player);
             }
+        }
+
+        foreach ($lineup as $key=>$name) {
+            if (!in_array($name,$names))
+                array_push($lineupFull, array("name" => $name));
         }
 
         return $lineupFull;
@@ -410,8 +417,9 @@ function insertPlayer($info, $user) {
     $logger->write_log("#INSERT PLAYER IN DB: insertPlayer()",$logger_file);
 
     if ($info["url"] !== 'N/A'){
-        $stmt = $mysqli->prepare('INSERT INTO player(id, name, who_name, value, pos, team, user_id, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-        $stmt->bind_param("ississss",$info["id"], $info["name"], $info["who_name"], $info["value"], $info["pos"], $info["team"]["id"], $user["pid"], $info["url"]);
+        $user_old_id = 0;
+        $stmt = $mysqli->prepare('INSERT INTO player(id, name, who_name, value, pos, team, user_id, user_old_id, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->bind_param("issisiiis",$info["id"], $info["name"], $info["who_name"], $info["value"], $info["pos"], $info["team"]["id"], $user["pid"], $user_old_id, $info["url"]);
         $result = $stmt->execute();
 
         if ($result === false) {
