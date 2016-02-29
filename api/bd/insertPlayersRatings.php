@@ -66,7 +66,13 @@ function insertPlayersRatings($communityName)
                 if ($playerEvent_bd->num_rows > 0) {
                     $playerEvent = $playerEvent_bd->fetch_assoc();
                     $logger->write_log("#PLAYER RATING EXISTS IN DB: \n" . print_r($playerEvent, true), $logger_file);
-                    //NO HAY QUE RECOGER EL RATING
+                    //Update player rating if necessary
+                    $player_event_info = $playerEvent_bd->fetch_assoc();
+                    $info = getPlayerRating($player_info, $matchdayInfo);
+                    if (floatval($info["who_rating"]) !== floatval($player_event_info["rating_who"]))
+                        updatePlayerRating($info);
+                    else
+                        $logger->write_log("#NO NEED TO UPDATE RATING \n", $logger_file);
 
                     //Matchday info for player doesn't exist in DB
                 } else {
@@ -77,7 +83,7 @@ function insertPlayersRatings($communityName)
                     insertPlayerRating($info);
                 }
 
-                //Player doesn't exist in DB
+            //Player doesn't exist in DB
             } else {
                 $logger->write_log("#PLAYER " . $lineup[$i]["name"] . "DOESN'T EXISTS IN DB", $logger_file);
                 //Get player info from WHOSCORED web page
@@ -453,6 +459,28 @@ function insertPlayerRating($info) {
         $logger->write_log("#ERROR INSERT PLAYER RATING IN DB:\n" . print_r($stmt->fullQuery,true), $logger_error_file);
     } else {
         $logger->write_log("#SUCCESS INSERT PLAYER RATING IN DB:\n" . print_r($info,true), $logger_file);
+    }
+    $stmt->close();
+    return $result;
+}
+
+//UPDATE PLAYER DB RATING EVENT
+function updatePlayerRating($info) {
+
+    global $mysqli, $logger, $logger_file, $logger_error_file;
+
+    $logger->write_log("#UPDATE PLAYER RATING IN DB: updatePlayerRating()\n",$logger_file);
+
+    $stmt = $mysqli->prepare('UPDATE event SET rating_who=?, rating=?, goals=?, yellow_cards=?, red_cards=? WHERE player_id=? AND matchday=?');
+    $stmt->bind_param("diiiiii", $info["who_rating"], $info["comunio_rating"], $info["goals"], $info["yellow"], $info["red"], $info["id"], $info["matchday"]);
+    $result = $stmt->execute();
+
+    if ($result === false) {
+        $logger->write_log("#ERROR UPDATING PLAYER RATING IN DB:\n" . print_r($info,true), $logger_error_file);
+        $logger->write_log("#ERROR UPDATING PLAYER RATING IN DB:\n" . print_r($mysqli->error,true), $logger_error_file);
+        $logger->write_log("#ERROR UPDATING PLAYER RATING IN DB:\n" . print_r($stmt->fullQuery,true), $logger_error_file);
+    } else {
+        $logger->write_log("#SUCCESS UPDATING PLAYER RATING IN DB:\n" . print_r($info,true), $logger_file);
     }
     $stmt->close();
     return $result;
