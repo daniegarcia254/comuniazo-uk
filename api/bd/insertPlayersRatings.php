@@ -52,9 +52,10 @@ function insertPlayersRatings($communityName)
 
             //Player exists in DB
             if ($playerInfo_bd->num_rows > 0) {
+
                 $player_info = $playerInfo_bd->fetch_assoc();
                 $logger->write_log("#PLAYER EXISTS IN DB: \n" . print_r($player_info["name"],true), $logger_file);
-
+                
                 //Get player event for matchday in DB
                 $query = 'SELECT * FROM event WHERE player_id="' . $player_info["id"] . '" AND matchday IN (' . implode(',', $matchdayInfo["ids"]) . ')';
                 $playerEvent_bd = $mysqli->query($query);
@@ -293,6 +294,7 @@ function getPlayerRating($player, $matchdayInfo){
     }
 }
 
+
 //Transform the "Whoscored.com" rating to "Comunio" equivalent rating
 function transformRating($rating, $goals, $yellow, $red, $pos){
 
@@ -387,8 +389,6 @@ function getTeamInfo($team)
 {
     global $mysqli, $logger, $logger_file, $logger_error_file;
 
-    $logger->write_log("#GET TEAM INFO: getTeamInfo()",$logger_file);
-
     $teamName = $mysqli->query('SELECT * FROM team WHERE name="' . $team . '"');
 
     if ($teamName === 'false') {
@@ -398,7 +398,6 @@ function getTeamInfo($team)
         return false;
     } else {
         $teamName = $teamName->fetch_assoc();
-        $logger->write_log("#SUCCESS GET TEAM INFO:\n" . print_r($teamName,true),$logger_file);
         return $teamName;
     }
 };
