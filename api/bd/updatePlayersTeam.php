@@ -140,8 +140,12 @@ function updateUserTeam($user)
                 //Player doesn't belong to user  --> Update basic info && user_id
                 } else {
                     $logger->write_log("#PLAYER EXISTS BUT DOESN'T BELONG TO USER: \n" . print_r($player_info_db,true), $logger_file);
-                    $stmt = $mysqli->prepare('UPDATE player SET value=?, team=?, pos=?, user_id=? WHERE name=?');
-                    $stmt->bind_param("iisis", $player_info_comunio["value"], $player_info_comunio["team"]["id"], $player_info_comunio["pos"], $user["pid"], $player_info_comunio["name"]);
+
+                    if ($player_info_db["user_id_old"]===0) $user_id_old=0;
+                    else $user_id_ld=$player_info_db["user_id"];
+
+                    $stmt = $mysqli->prepare('UPDATE player SET value=?, team=?, pos=?, user_id=?, user_id_old=? WHERE name=?');
+                    $stmt->bind_param("iisiis", $player_info_comunio["value"], $player_info_comunio["team"]["id"], $player_info_comunio["pos"], $user["pid"], $user_id_old, $player_info_comunio["name"]);
                 }
                 
                 $result = $stmt->execute();
@@ -163,8 +167,9 @@ function updateUserTeam($user)
 
                 if (isset($player_info_who["who_name"])) {
                     $logger->write_log("#PLAYER WHO_SCORED INFO --> INSERT: \n" . print_r($player_info_who,true), $logger_file);
-                    $stmt = $mysqli->prepare('INSERT INTO player(id, name, who_name, value, pos, team, user_id, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
-                    $stmt->bind_param("issisiis", $player_info_who["id"], $player_info_who["name"], $player_info_who["who_name"], $player_info_who["value"], $player_info_who["pos"], $player_info_who["team"]["id"], $user["pid"], $player_info_who["url"]);
+                    $stmt = $mysqli->prepare('INSERT INTO player(id, name, who_name, value, pos, team, user_id, user_id_old, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+                    $user_id_old=0;
+                    $stmt->bind_param("issisiiis", $player_info_who["id"], $player_info_who["name"], $player_info_who["who_name"], $player_info_who["value"], $player_info_who["pos"], $player_info_who["team"]["id"], $user["pid"], $user_id_old, $player_info_who["url"]);
                     $result = $stmt->execute();
 
                     if ($result === false) {
@@ -182,10 +187,11 @@ function updateUserTeam($user)
         //If a player of the DB no longer belongs to player team --> Update user_id to 0 (no team)
         foreach ($players_db_info as $key=>$player_info){
             if (!in_array($player_info["name"],$namesComunio)) {
-                $logger->write_log("#PLAYER DOESN'T BELONG ANYMOR TO USER: \n" . print_r($player_info,true), $logger_file);
+                $logger->write_log("#PLAYER DOESN'T BELONG ANYMORE TO USER: \n" . print_r($player_info,true), $logger_file);
 
-                $stmt = $mysqli->prepare('UPDATE player SET user_id=0 WHERE name=? AND user_id=?');
-                $stmt->bind_param("si", $player_info["name"], $user["pid"]);
+                $user_id_old = $player_info["user_id"];
+                $stmt = $mysqli->prepare('UPDATE player SET user_id=0, user_old_id=? WHERE name=? AND user_id=?');
+                $stmt->bind_param("isi", $user_id_old, $player_info["name"], $user["pid"]);
                 $result = $stmt->execute();
 
                 if ($result === false) {
