@@ -143,10 +143,10 @@ function updateUserTeam($user)
                 } else {
                     $logger->write_log("#PLAYER EXISTS BUT DOESN'T BELONG TO USER: \n" . print_r($player_info_db,true), $logger_file);
 
-                    if ($player_info_db["user_id_old"]===0) $user_id_old=0;
+                    if ($player_info_db["user_old_id"]===0) $user_id_old=0;
                     else $user_id_ld=$player_info_db["user_id"];
 
-                    $stmt = $mysqli->prepare('UPDATE player SET value=?, team=?, pos=?, user_id=?, user_id_old=? WHERE name=?');
+                    $stmt = $mysqli->prepare('UPDATE player SET value=?, team=?, pos=?, user_id=?, user_old_id=? WHERE name=?');
                     $stmt->bind_param("iisiis", $player_info_comunio["value"], $player_info_comunio["team"]["id"], $player_info_comunio["pos"], $user["pid"], $user_id_old, $player_info_comunio["name"]);
                 }
                 
@@ -169,9 +169,8 @@ function updateUserTeam($user)
 
                 if (isset($player_info_who["who_name"])) {
                     $logger->write_log("#PLAYER WHO_SCORED INFO --> INSERT: \n" . print_r($player_info_who,true), $logger_file);
-                    $stmt = $mysqli->prepare('INSERT INTO player(id, name, who_name, value, pos, team, user_id, user_id_old, url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
-                    $user_id_old=0;
-                    $stmt->bind_param("issisiiis", $player_info_who["id"], $player_info_who["name"], $player_info_who["who_name"], $player_info_who["value"], $player_info_who["pos"], $player_info_who["team"]["id"], $user["pid"], $user_id_old, $player_info_who["url"]);
+                    $stmt = $mysqli->prepare('INSERT INTO player(id, name, who_name, value, pos, team, user_id, user_old_id, url) VALUES (?, ?, ?, ?, ?, ?, ?, 0, ?)');
+                    $stmt->bind_param("issisiis", $player_info_who["id"], $player_info_who["name"], $player_info_who["who_name"], $player_info_who["value"], $player_info_who["pos"], $player_info_who["team"]["id"], $user["pid"], $player_info_who["url"]);
                     $result = $stmt->execute();
 
                     if ($result === false) {
