@@ -2,8 +2,8 @@
  * Created by Daniel on 10/10/2015.
  */
 comunioApp.constant('APP_CONSTANTS', {
-    "API_URI" : "http://localhost/comuniazo-uk/api",    //Dev
-    //"API_URI" : "http://http://www.danigarcia-dev.com/comuniazo-uk/api",  //Prod
+    //"API_URI" : "http://localhost/comuniazo-uk/api",    //Dev
+    "API_URI" : "http://www.danigarcia-dev.com/comuniazo-uk/api",  //Prod
     "schedule": [
         {matchday: 1, date: ['2015-08-08','2015-08-09','2015-08-10']},
         {matchday: 2, date: ['2015-08-15','2015-08-16','2015-08-17']},
