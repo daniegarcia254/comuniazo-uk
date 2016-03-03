@@ -1,5 +1,7 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
+
 class APILogWriter {
     public function write($message, $level = \Slim\Log::DEBUG) {
         # Simple for now
