@@ -2,8 +2,8 @@
 
 set_time_limit(0);
 //Require vendor autoload for load libraries and frameworks
-include(dirname(__FILE__) . '\..\vendor\autoload.php');
-include(dirname(__FILE__) . '\..\config.php');
+include(dirname(__FILE__) . '/../vendor/autoload.php');
+include(dirname(__FILE__) . '/../config.php');
 
 //Load Goutte Client (Web Scraping)
 use Goutte\Client;

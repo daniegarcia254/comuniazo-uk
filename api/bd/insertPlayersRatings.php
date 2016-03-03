@@ -2,10 +2,10 @@
 
 set_time_limit(0);
 //Require vendor autoload for load libraries and frameworks
-include(dirname(__FILE__) . '\..\vendor\autoload.php');
-include(dirname(__FILE__) . '\..\config.php');
-include(dirname(__FILE__) . '\E_mysqli.php');
-include(dirname(__FILE__) . '\logger.php');
+include(dirname(__FILE__) . '/../vendor/autoload.php');
+include(dirname(__FILE__) . '/../config.php');
+include(dirname(__FILE__) . '/E_mysqli.php');
+include(dirname(__FILE__) . '/logger.php');
 
 //Create Logger object
 $logger = new Logger();
@@ -22,6 +22,8 @@ $mysqli = createDBConnection();
 insertPlayersRatings(COMMUNITY_ID);
 
 /**
+ * INSERT PLAYER RATINGS IN DB FOR EACH COMUNIO PLAYER TEAM
+ *
  * @param $communityName
  */
 function insertPlayersRatings($communityName)
