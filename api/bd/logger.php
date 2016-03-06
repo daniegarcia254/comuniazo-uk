@@ -11,8 +11,9 @@ class Logger
     // Constructor
     function __construct() {
         $date = getdate();
-        $file_log_name = self::FILE_BASE.$date["mday"]."_".$date["mon"]."_".$date["year"].".log";
-        $file_log_error_name = self::FILE_BASE.$date["mday"]."_".$date["mon"]."_".$date["year"].".log.error";
+	$base_dir = '/var/www/html/comuniazo-uk/api/log/';
+        $file_log_name = $base_dir . $date["mday"]."_".$date["mon"]."_".$date["year"].".log";
+        $file_log_error_name = $base_dir . $date["mday"]."_".$date["mon"]."_".$date["year"].".log.error";
         $this->setFileLog($file_log_name);
         $this->setFileLogError($file_log_error_name);
 
