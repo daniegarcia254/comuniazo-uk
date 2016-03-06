@@ -66,17 +66,16 @@ function insertPlayersRatings($communityName)
 
                 //Matchday info for player is already in DB
                 if ($playerEvent_bd->num_rows > 0) {
+
                     $playerEvent = $playerEvent_bd->fetch_assoc();
                     $logger->write_log("#PLAYER RATING EXISTS IN DB: \n" . print_r($playerEvent, true), $logger_file);
-                    //Update player rating if necessary
-                    $player_event_info = $playerEvent_bd->fetch_assoc();
-                    $info = getPlayerRating($player_info, $matchdayInfo);
-                    if (floatval($info["who_rating"]) !== floatval($player_event_info["rating_who"]))
-                        updatePlayerRating($info);
-                    else
-                        $logger->write_log("#NO NEED TO UPDATE RATING \n", $logger_file);
 
-                    //Matchday info for player doesn't exist in DB
+                    //Update player rating if necessary
+                    $info = getPlayerRating($player_info, $matchdayInfo);    
+                    if (floatval($info["who_rating"]) !== floatval($playerEvent["rating_who"])) 
+                        updatePlayerRating($info,$matchdayInfo["ids"]);
+
+                //Matchday info for player doesn't exist in DB
                 } else {
                     $logger->write_log("#PLAYER " . $player_info["name"] . "RATING DOESN'T EXISTS IN DB", $logger_file);
                     //Get player matchday info
@@ -467,14 +466,16 @@ function insertPlayerRating($info) {
 }
 
 //UPDATE PLAYER DB RATING EVENT
-function updatePlayerRating($info) {
+function updatePlayerRating($info, $matchday_ids) {
 
     global $mysqli, $logger, $logger_file, $logger_error_file;
 
     $logger->write_log("#UPDATE PLAYER RATING IN DB: updatePlayerRating()\n",$logger_file);
 
-    $stmt = $mysqli->prepare('UPDATE event SET rating_who=?, rating=?, goals=?, yellow_cards=?, red_cards=? WHERE player_id=? AND matchday=?');
-    $stmt->bind_param("diiiiii", $info["who_rating"], $info["comunio_rating"], $info["goals"], $info["yellow"], $info["red"], $info["id"], $info["matchday"]);
+    $matchdays = implode(',',$matchday_ids);
+
+    $stmt = $mysqli->prepare('UPDATE event SET rating_who=?, rating=?, goals=?, yellow_cards=?, red_cards=?, matchday=? WHERE player_id=? AND matchday IN ('.$matchdays.')');
+    $stmt->bind_param("diiiiii", $info["who_rating"], $info["comunio_rating"], $info["goals"], $info["yellow"], $info["red"], $info["matchday"],$info["id"]);
     $result = $stmt->execute();
 
     if ($result === false) {
